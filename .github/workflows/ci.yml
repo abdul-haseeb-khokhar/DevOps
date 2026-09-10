@@ -30,8 +30,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: logging for registry container
+        uses: docker/login-action@v3
+        with: 
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
       - name: checkout repository code
         uses: actions/checkout@v4
 
       - name: Building docker image
-        run: docker build -t devops:${{github.sha}} .
+        run: docker build -t abdulhaseebkhokhar/devops:${{github.sha}} .
+
+      - name: Push docker image
+        run: docker push abdulhaseebkhokhar/devops:${{github.sha}} 
